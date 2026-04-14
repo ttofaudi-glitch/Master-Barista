@@ -29,67 +29,45 @@
   --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-html, body { 
-  background: var(--bg); color: var(--text); 
+html, body {
+  background: var(--bg); color: var(--text);
   font-family: 'DM Sans', -apple-system, sans-serif;
   height: 100%; overflow: hidden;
   overscroll-behavior: none;
 }
 input, select, textarea, button { font-family: inherit; }
-input[type="number"], input[type="text"], textarea {
-  font-size: 16px !important; /* prevents iOS zoom */
-}
+input[type="number"], input[type="text"], textarea { font-size: 16px !important; }
 
-/* App shell */
 #app {
   display: flex; flex-direction: column;
   height: 100vh; height: 100dvh;
   padding-top: var(--safe-top);
   padding-bottom: var(--safe-bottom);
 }
+.header { padding: 12px 16px 0; flex-shrink: 0; }
+.header-top { display: flex; align-items: baseline; gap: 8px; margin-bottom: 10px; }
+.header-top h1 { font-family: 'Instrument Serif', serif; font-size: 24px; font-weight: 400; color: var(--accent); }
+.badge { font-size: 10px; color: var(--text2); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
 
-/* Header */
-.header {
-  padding: 12px 16px 0;
-  flex-shrink: 0;
-}
-.header-top {
-  display: flex; align-items: baseline; gap: 8px;
-  margin-bottom: 10px;
-}
-.header-top h1 {
-  font-family: 'Instrument Serif', serif;
-  font-size: 24px; font-weight: 400; color: var(--accent);
-}
-.header-top .badge {
-  font-size: 10px; color: var(--text2); font-weight: 600;
-  letter-spacing: 0.08em; text-transform: uppercase;
-}
-
-/* Tab bar */
-.tabs {
-  display: flex; gap: 0;
-  border-bottom: 1px solid var(--border);
-}
+.tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); }
 .tab {
   flex: 1; padding: 10px 0; text-align: center;
   font-size: 11px; font-weight: 600; letter-spacing: 0.06em;
   text-transform: uppercase; background: none; border: none;
   color: var(--text2); cursor: pointer;
-  border-bottom: 2px solid transparent;
-  transition: all 0.2s;
+  border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s;
 }
 .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
 
-/* Content area */
 .content {
   flex: 1; overflow-y: auto; overflow-x: hidden;
   padding: 12px 16px 100px;
   -webkit-overflow-scrolling: touch;
-  scroll-behavior: smooth;
 }
 
-/* Section headers */
+.view-panel { display: none; }
+.view-panel.active { display: block; }
+
 .section-hdr {
   font-family: 'Instrument Serif', serif;
   font-size: 17px; color: var(--accent);
@@ -98,7 +76,6 @@ input[type="number"], input[type="text"], textarea {
 }
 .section-hdr:first-child { margin-top: 4px; }
 
-/* Form elements */
 .field { margin-bottom: 10px; }
 .field-label {
   display: block; font-size: 10px; font-weight: 600;
@@ -114,74 +91,63 @@ input[type="number"], input[type="text"], textarea {
 }
 .input:focus { outline: none; border-color: var(--accent); }
 .input-mono { font-family: 'JetBrains Mono', monospace; }
+select.input {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239A8E80' stroke-width='1.5' fill='none'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 10px center; padding-right: 30px;
+}
 
-select.input { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='7'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239A8E80' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; padding-right: 30px; }
-
-/* Grid layouts */
 .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
 
-/* Quick number stepper */
 .stepper {
-  display: flex; align-items: center; gap: 0;
+  display: flex; align-items: center;
   border: 1px solid var(--border); border-radius: 8px;
   overflow: hidden; background: var(--surface2);
 }
 .stepper-btn {
-  width: 44px; height: 44px; display: flex; align-items: center;
+  width: 48px; height: 48px; display: flex; align-items: center;
   justify-content: center; background: none; border: none;
-  color: var(--accent); font-size: 20px; font-weight: 600;
-  cursor: pointer; user-select: none;
-  -webkit-user-select: none;
+  color: var(--accent); font-size: 22px; font-weight: 600;
+  cursor: pointer; user-select: none; -webkit-user-select: none;
+  transition: background 0.1s;
 }
 .stepper-btn:active { background: var(--accent-bg); }
 .stepper-val {
   flex: 1; text-align: center; font-family: 'JetBrains Mono', monospace;
   font-size: 18px; font-weight: 600; color: var(--text);
-  border: none; background: none; min-width: 0; padding: 0;
+  min-width: 0;
 }
 
-/* Tags */
 .tags { display: flex; flex-wrap: wrap; gap: 6px; }
 .tag {
   padding: 6px 12px; border-radius: 16px; font-size: 12px;
   border: 1px solid var(--border); background: none;
   color: var(--text2); cursor: pointer; font-weight: 500;
-  transition: all 0.15s; user-select: none;
-  -webkit-user-select: none;
+  transition: all 0.15s; user-select: none; -webkit-user-select: none;
 }
 .tag.on {
   border-color: var(--accent); background: var(--accent-bg);
   color: var(--accent); font-weight: 600;
 }
 
-/* Score slider */
-.score-row {
-  display: flex; align-items: center; gap: 12px;
-}
-.score-row input[type="range"] {
-  flex: 1; accent-color: var(--accent); height: 6px;
-}
+.score-row { display: flex; align-items: center; gap: 12px; }
+.score-row input[type="range"] { flex: 1; accent-color: var(--accent); height: 6px; }
 .score-val {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 28px; font-weight: 700; min-width: 40px;
-  text-align: center;
+  font-size: 28px; font-weight: 700; min-width: 40px; text-align: center;
 }
 
-/* Buttons */
 .btn-primary {
   width: 100%; padding: 16px; border-radius: 10px;
   border: none; background: var(--accent); color: #1A1714;
   font-size: 16px; font-weight: 700; cursor: pointer;
-  letter-spacing: 0.02em;
-  -webkit-appearance: none;
 }
 .btn-primary:active { opacity: 0.85; }
 .btn-secondary {
   width: 100%; padding: 14px; border-radius: 10px;
   border: 1px solid var(--border); background: none;
-  color: var(--text2); font-size: 14px; font-weight: 600;
-  cursor: pointer;
+  color: var(--text2); font-size: 14px; font-weight: 600; cursor: pointer;
 }
 .btn-danger {
   width: 100%; padding: 10px; border-radius: 8px;
@@ -190,13 +156,10 @@ select.input { appearance: none; background-image: url("data:image/svg+xml,%3Csv
   cursor: pointer; margin-top: 16px;
 }
 
-/* Cards */
 .card {
   padding: 12px; background: var(--surface); border-radius: 10px;
   border: 1px solid var(--border); margin-bottom: 8px;
 }
-
-/* Suggestion cards */
 .suggestion {
   padding: 12px; background: var(--surface); border-radius: 10px;
   margin-bottom: 8px; border-left: 3px solid;
@@ -208,11 +171,9 @@ select.input { appearance: none; background-image: url("data:image/svg+xml,%3Csv
 .suggestion p { font-size: 13px; line-height: 1.5; margin: 0 0 6px; }
 .suggestion .actions { display: flex; flex-wrap: wrap; gap: 4px; }
 .suggestion .action {
-  padding: 3px 8px; border-radius: 4px; font-size: 10px;
-  font-weight: 600;
+  padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 600;
 }
 
-/* Stats grid */
 .stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 16px; }
 .stat {
   padding: 12px 8px; background: var(--surface); border-radius: 10px;
@@ -221,52 +182,31 @@ select.input { appearance: none; background-image: url("data:image/svg+xml,%3Csv
 .stat .label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text2); margin-bottom: 3px; }
 .stat .value { font-size: 22px; font-weight: 700; font-family: 'JetBrains Mono', monospace; }
 
-/* Bar chart */
 .bars { display: flex; align-items: flex-end; gap: 3px; height: 80px; padding: 8px 0; }
-.bar {
-  flex: 1; min-width: 4px; max-width: 18px; border-radius: 3px 3px 0 0;
-  transition: height 0.3s ease;
-}
+.bar { flex: 1; min-width: 4px; max-width: 18px; border-radius: 3px 3px 0 0; transition: height 0.3s ease; }
 
-/* History shot row */
-.shot-row {
-  display: flex; justify-content: space-between; align-items: center;
-}
-.shot-score {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 20px; font-weight: 700;
-}
-.shot-recipe {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 11px; color: var(--text2);
-}
-.shot-meta {
-  font-size: 10px; color: var(--text2); margin-top: 3px;
-}
+.shot-score { font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 700; }
+.shot-recipe { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--text2); }
+.shot-meta { font-size: 10px; color: var(--text2); margin-top: 3px; }
 .flavor-chips { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 4px; }
 .flavor-chip {
   padding: 1px 6px; border-radius: 8px; font-size: 9px;
   background: var(--accent-bg); color: var(--accent); font-weight: 500;
 }
 
-/* Toast */
 .toast {
   position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
   padding: 10px 20px; border-radius: 20px; background: var(--accent);
   color: #1A1714; font-size: 13px; font-weight: 600;
-  z-index: 100; opacity: 0; transition: opacity 0.3s;
-  pointer-events: none;
+  z-index: 100; opacity: 0; transition: opacity 0.3s; pointer-events: none;
 }
 .toast.show { opacity: 1; }
 
-/* Bottom nav for mobile */
 .bottom-nav {
   position: fixed; bottom: 0; left: 0; right: 0;
-  display: none; /* hidden on desktop, shown via media query */
-  background: var(--surface);
-  border-top: 1px solid var(--border);
-  padding: 6px 0 calc(6px + var(--safe-bottom));
-  z-index: 50;
+  display: none;
+  background: var(--surface); border-top: 1px solid var(--border);
+  padding: 6px 0 calc(6px + var(--safe-bottom)); z-index: 50;
 }
 @media (max-width: 600px) {
   .tabs { display: none; }
@@ -282,744 +222,419 @@ select.input { appearance: none; background-image: url("data:image/svg+xml,%3Csv
 .bnav-btn.active { color: var(--accent); }
 .bnav-icon { font-size: 20px; }
 
-/* Alert banner */
 .alert {
   padding: 10px 12px; border-radius: 8px; margin-bottom: 12px;
   background: var(--accent-bg); border: 1px solid var(--border);
   font-size: 12px; color: var(--accent);
-  display: flex; align-items: center; gap: 8px;
 }
-
-/* Last shot sticky banner */
 .last-shot-banner {
   padding: 8px 12px; background: var(--surface); border-radius: 8px;
-  border: 1px solid var(--border); margin-bottom: 12px;
-  font-size: 11px; color: var(--text2);
+  border: 1px solid var(--border); margin-bottom: 12px; font-size: 11px; color: var(--text2);
 }
 .last-shot-banner strong { color: var(--text); }
 
-/* Quick preset buttons */
-.presets { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
-.preset {
-  padding: 6px 12px; border-radius: 8px; font-size: 11px;
-  border: 1px solid var(--border); background: var(--surface2);
-  color: var(--text2); cursor: pointer; font-weight: 500;
-}
-.preset:active { background: var(--accent-bg); color: var(--accent); border-color: var(--accent); }
-
-/* Animations */
 @keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 .fade-up { animation: fadeUp 0.25s ease-out; }
-
-/* Haptic-like visual feedback */
-.tap-feedback:active { transform: scale(0.97); transition: transform 0.05s; }
 </style>
 </head>
 <body>
-<div id="app"></div>
+<div id="app">
+  <div class="header">
+    <div class="header-top">
+      <span style="font-size:24px;font-family:'Instrument Serif',serif">☕</span>
+      <h1>Dial-In</h1>
+      <span class="badge" id="shot-count">0 shots</span>
+    </div>
+    <div class="tabs" id="tabs-top"></div>
+  </div>
+  <div class="content" id="content">
+    <div class="view-panel active" id="view-log"></div>
+    <div class="view-panel" id="view-setup"></div>
+    <div class="view-panel" id="view-history"></div>
+    <div class="view-panel" id="view-insights"></div>
+  </div>
+  <div class="bottom-nav" id="bottom-nav"></div>
+  <div class="toast" id="toast"></div>
+</div>
 
 <script>
-// ==============================
-// DATA LAYER
-// ==============================
-const DB_NAME = 'DialInDB';
-const DB_VERSION = 1;
+// === DATABASE ===
+const DB_NAME='DialInDB', DB_VER=1;
+function openDB(){return new Promise((res,rej)=>{const r=indexedDB.open(DB_NAME,DB_VER);r.onupgradeneeded=e=>{const db=e.target.result;if(!db.objectStoreNames.contains('shots')){const s=db.createObjectStore('shots',{keyPath:'id',autoIncrement:true});s.createIndex('timestamp','timestamp');}if(!db.objectStoreNames.contains('config'))db.createObjectStore('config',{keyPath:'key'});};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error);})}
+async function dbSave(shot){const db=await openDB();return new Promise((res,rej)=>{const tx=db.transaction('shots','readwrite');tx.objectStore('shots').add({...shot,timestamp:Date.now()});tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error);})}
+async function dbAll(){const db=await openDB();return new Promise((res,rej)=>{const r=db.transaction('shots','readonly').objectStore('shots').index('timestamp').getAll();r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error);})}
+async function dbClear(){const db=await openDB();return new Promise((res,rej)=>{const tx=db.transaction('shots','readwrite');tx.objectStore('shots').clear();tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error);})}
+async function cfgSave(k,v){const db=await openDB();return new Promise((res,rej)=>{const tx=db.transaction('config','readwrite');tx.objectStore('config').put({key:k,value:v});tx.oncomplete=()=>res();tx.onerror=()=>rej(tx.error);})}
+async function cfgGet(k){const db=await openDB();return new Promise((res,rej)=>{const r=db.transaction('config','readonly').objectStore('config').get(k);r.onsuccess=()=>res(r.result?r.result.value:null);r.onerror=()=>rej(r.error);})}
 
-function openDB() {
-  return new Promise((resolve, reject) => {
-    const req = indexedDB.open(DB_NAME, DB_VERSION);
-    req.onupgradeneeded = e => {
-      const db = e.target.result;
-      if (!db.objectStoreNames.contains('shots')) {
-        const store = db.createObjectStore('shots', { keyPath: 'id', autoIncrement: true });
-        store.createIndex('timestamp', 'timestamp');
-        store.createIndex('beanName', 'beanName');
-      }
-      if (!db.objectStoreNames.contains('config')) {
-        db.createObjectStore('config', { keyPath: 'key' });
-      }
-    };
-    req.onsuccess = () => resolve(req.result);
-    req.onerror = () => reject(req.error);
+// === CONSTANTS ===
+const FLAVORS=['Fruity','Berry','Citrus','Tropical','Floral','Honey','Caramel','Chocolate','Nutty','Spicy','Earthy','Woody','Smoky','Roasty','Bitter','Sour','Sweet','Malty','Winey','Herbal','Vanilla'];
+const TEXTURES=['Thin/Watery','Silky','Syrupy','Creamy','Heavy/Thick','Chalky','Astringent'];
+const ACIDITIES=['Flat/None','Low & Round','Medium & Bright','High & Sparkling','Sharp/Sour'];
+const FINISHES=['Short/Clean','Medium','Long & Lingering','Dry','Sweet Aftertaste','Bitter Aftertaste'];
+const ROASTS=['Light','Light-Medium','Medium','Medium-Dark','Dark'];
+const PROCESSES=['Washed','Natural','Honey','Anaerobic','Carbonic Mac.','Wet-hulled','Other'];
+const ORIGINS=['Ethiopia','Kenya','Colombia','Brazil','Guatemala','Costa Rica','Panama','Honduras','Peru','Indonesia','India','Yemen','Rwanda','El Salvador','Nicaragua','Mexico','Tanzania','China Yunnan','Other'];
+const BASKETS=['Stock','VST','IMS','Pullman','Other'];
+const PREPS=['WDT','WDT + Tamp','Tamp Only','Leveler + Tamp','WDT + Leveler + Tamp'];
+const BURRS=['Flat 64mm','Flat 83mm','Flat 98mm','Conical','Ghost Burr','Other'];
+
+// === STATE ===
+let shot={beanName:'',roast:'',origin:'',process:'',flavorNotes:'',daysOffRoast:10,grindSetting:'',rpm:0,dose:18,yield:36,brewTime:28,brewTemp:93,pressure:9,preinfusion:5,basket:'',puckPrep:'',flavors:[],texture:'',acidity:'',finish:'',score:5,notes:'',humidity:0,ambientTemp:0};
+let setup={machineName:'',grinderName:'',burrType:'',waterTDS:0,boilerType:'',basketDefault:'',defaultDose:18};
+let history=[];
+
+// === ANALYSIS ===
+function analyze(s,hist){
+  const sg=[], ratio=s.yield/s.dose;
+  const sour=(s.flavors||[]).filter(f=>['Sour','Citrus'].includes(f));
+  const bitter=(s.flavors||[]).filter(f=>['Bitter','Roasty','Smoky'].includes(f));
+  if(s.score<=5){
+    if(sour.length||s.acidity==='Sharp/Sour') sg.push({type:'extraction',pri:'high',msg:'Likely underextracted. Grind finer, raise temp +1-2°C, or increase yield.',actions:['Grind finer','Temp +1°C','Yield +3g']});
+    if(bitter.length||s.texture==='Astringent') sg.push({type:'extraction',pri:'high',msg:'Likely overextracted. Grind coarser, lower temp, or pull shorter.',actions:['Grind coarser','Temp -1°C','Yield -3g']});
+    if(s.texture==='Thin/Watery'||s.texture==='Chalky') sg.push({type:'puck',pri:'medium',msg:'Possible channeling. Check WDT and tamp consistency.',actions:['Improve WDT','Check tamp']});
+  }
+  if(s.brewTime<22) sg.push({type:'timing',pri:'high',msg:`Shot ran fast (${s.brewTime}s). Grind finer or up dose.`,actions:['Grind finer','Dose +0.5g']});
+  if(s.brewTime>35) sg.push({type:'timing',pri:'high',msg:`Shot choked (${s.brewTime}s). Grind coarser or reduce dose.`,actions:['Grind coarser','Dose -0.5g']});
+  if(ratio<1.5) sg.push({type:'ratio',pri:'medium',msg:`Tight ristretto (${ratio.toFixed(1)}:1). May taste muddy.`,actions:['Yield to 2:1']});
+  if(ratio>3.0) sg.push({type:'ratio',pri:'medium',msg:`Long ratio (${ratio.toFixed(1)}:1). May be hollow.`,actions:['Yield to 2.5:1']});
+  const dor=s.daysOffRoast||0;
+  if(dor>0&&dor<5) sg.push({type:'freshness',pri:'low',msg:`${dor} days off roast — heavy degassing.`,actions:['Wait 2-3 days']});
+  if(dor>30) sg.push({type:'freshness',pri:'medium',msg:`${dor} days off roast — staling.`,actions:['Grind finer']});
+  if(s.humidity&&s.humidity>70) sg.push({type:'environment',pri:'low',msg:`High humidity (${s.humidity}%).`,actions:['Grind coarser 0.5']});
+  if(hist.length>=3){
+    const good=hist.filter(h=>h.beanName===s.beanName&&h.score>=7);
+    if(good.length>=2){
+      const a=(arr,k)=>arr.reduce((sum,h)=>sum+(parseFloat(h[k])||0),0)/arr.length;
+      sg.push({type:'personal',pri:'high',msg:`Best ${good.length} shots with "${s.beanName}": grind ~${a(good,'grindSetting').toFixed(1)}, ${a(good,'brewTemp').toFixed(1)}°C, ${a(good,'dose').toFixed(1)}g→${a(good,'yield').toFixed(1)}g.`,actions:[`Grind ${a(good,'grindSetting').toFixed(1)}`,`Temp ${a(good,'brewTemp').toFixed(1)}°C`]});
+    }
+  }
+  if(!sg.length&&s.score>=7) sg.push({type:'success',pri:'info',msg:'Great shot — save as baseline.',actions:[]});
+  if(!sg.length) sg.push({type:'note',pri:'info',msg:'Add flavor/texture detail for better recs.',actions:[]});
+  return sg;
+}
+
+// === UI BUILDERS ===
+function priColor(p){return{high:'#E74C3C',medium:'#F5A623',low:'#5DADE2',info:'#4CAF50'}[p]||'#9A8E80'}
+function scoreColor(s){return s>=7?'var(--green)':s>=5?'var(--yellow)':'var(--red)'}
+function toast(msg){const el=$('toast');el.textContent=msg;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2000)}
+function $(id){return document.getElementById(id)}
+function el(tag,cls,text){const e=document.createElement(tag);if(cls)e.className=cls;if(text)e.textContent=text;return e}
+
+function makeStepper(label,unit,val,step,min,max,onChange){
+  const w=el('div','field');
+  const l=el('span','field-label');
+  l.innerHTML=label+(unit?` <span class="unit">(${unit})</span>`:'');
+  const row=el('div','stepper');
+  const v=el('span','stepper-val',String(val));
+  let cur=val;
+  const dec=el('button','stepper-btn','−');
+  const inc=el('button','stepper-btn','+');
+  dec.addEventListener('click',()=>{cur=Math.max(min,+(cur-step).toFixed(2));v.textContent=cur;onChange(cur)});
+  inc.addEventListener('click',()=>{cur=Math.min(max,+(cur+step).toFixed(2));v.textContent=cur;onChange(cur)});
+  w.setValue=(nv)=>{cur=nv;v.textContent=nv};
+  row.append(dec,v,inc);w.append(l,row);return w;
+}
+
+function makeSelect(label,opts,val,onChange){
+  const w=el('div','field');
+  const l=el('span','field-label',label);
+  const s=document.createElement('select');s.className='input';
+  const blank=document.createElement('option');blank.value='';blank.textContent='— Select —';s.appendChild(blank);
+  for(const o of opts){const opt=document.createElement('option');opt.value=o;opt.textContent=o;if(o===val)opt.selected=true;s.appendChild(opt)}
+  s.addEventListener('change',()=>onChange(s.value));
+  w.setValue=(nv)=>{s.value=nv};
+  w.append(l,s);return w;
+}
+
+function makeText(ph,val,onChange){
+  const inp=document.createElement('input');inp.type='text';inp.className='input';inp.placeholder=ph;inp.value=val;
+  inp.addEventListener('input',()=>onChange(inp.value));
+  inp.setValue=(v)=>{inp.value=v};
+  return inp;
+}
+
+function makeTags(label,opts,selected,max,onChange){
+  const w=el('div','field');
+  const l=el('span','field-label',`${label} (${selected.length}/${max})`);
+  const d=el('div','tags');
+  const btns=[];
+  for(const tag of opts){
+    const b=el('button',selected.includes(tag)?'tag on':'tag',tag);
+    b.addEventListener('click',()=>{
+      const i=selected.indexOf(tag);
+      if(i>=0){selected.splice(i,1);b.className='tag'}
+      else if(selected.length<max){selected.push(tag);b.className='tag on'}
+      l.textContent=`${label} (${selected.length}/${max})`;
+      onChange(selected);
+    });
+    btns.push(b);d.appendChild(b);
+  }
+  w.reset=()=>{selected.length=0;btns.forEach(b=>b.className='tag');l.textContent=`${label} (0/${max})`};
+  w.append(l,d);return w;
+}
+
+function hdr(t){return el('div','section-hdr',t)}
+function grid2(a,b){const d=el('div','grid2');d.append(a,b);return d}
+function grid3(a,b,c){const d=el('div','grid3');d.append(a,b,c);return d}
+function wrap(child){const d=el('div','field');d.appendChild(child);return d}
+
+// === BUILD LOG VIEW ===
+const logRefs={};
+function buildLog(){
+  const p=$('view-log');p.innerHTML='';
+
+  // Alert
+  const alert=el('div','alert');alert.id='setup-alert';
+  alert.textContent='⚠ Set up equipment first. ';
+  const abtn=document.createElement('button');
+  abtn.textContent='Setup';abtn.style.cssText='background:var(--accent);color:#1A1714;border:none;border-radius:4px;padding:3px 10px;font-size:11px;font-weight:600;cursor:pointer;margin-left:4px';
+  abtn.addEventListener('click',()=>switchView('setup'));
+  alert.appendChild(abtn);p.appendChild(alert);
+
+  // Banner
+  const banner=el('div','last-shot-banner');banner.id='last-shot-banner';banner.style.display='none';
+  p.appendChild(banner);
+
+  // Bean
+  p.appendChild(hdr('Bean'));
+  logRefs.beanName=makeText('Bean name / blend',shot.beanName,v=>shot.beanName=v);
+  p.appendChild(wrap(logRefs.beanName));
+  logRefs.roast=makeSelect('Roast',ROASTS,shot.roast,v=>shot.roast=v);
+  logRefs.origin=makeSelect('Origin',ORIGINS,shot.origin,v=>shot.origin=v);
+  p.appendChild(grid2(logRefs.roast,logRefs.origin));
+  logRefs.process=makeSelect('Process',PROCESSES,shot.process,v=>shot.process=v);
+  logRefs.dor=makeStepper('Days off roast','',shot.daysOffRoast,1,0,120,v=>shot.daysOffRoast=v);
+  p.appendChild(grid2(logRefs.process,logRefs.dor));
+  logRefs.flavorNotes=makeText('Package notes (e.g. blueberry, dark choc)',shot.flavorNotes,v=>shot.flavorNotes=v);
+  p.appendChild(wrap(logRefs.flavorNotes));
+
+  // Grinder
+  p.appendChild(hdr('Grinder'));
+  const gf=el('div','field');const gl=el('span','field-label','Burr gap setting');
+  logRefs.grind=document.createElement('input');logRefs.grind.type='text';logRefs.grind.className='input input-mono';
+  logRefs.grind.placeholder='e.g. 2.5.0';logRefs.grind.value=shot.grindSetting;
+  logRefs.grind.addEventListener('input',()=>shot.grindSetting=logRefs.grind.value);
+  gf.append(gl,logRefs.grind);
+  logRefs.rpm=makeStepper('RPM','',shot.rpm,50,200,1800,v=>shot.rpm=v);
+  p.appendChild(grid2(gf,logRefs.rpm));
+
+  // Brew
+  p.appendChild(hdr('Brew'));
+  logRefs.dose=makeStepper('Dose','g',shot.dose,0.5,10,25,v=>shot.dose=v);
+  logRefs.yield=makeStepper('Yield','g',shot.yield,0.5,10,80,v=>shot.yield=v);
+  logRefs.time=makeStepper('Time','s',shot.brewTime,1,10,60,v=>shot.brewTime=v);
+  p.appendChild(grid3(logRefs.dose,logRefs.yield,logRefs.time));
+  logRefs.temp=makeStepper('Temp','°C',shot.brewTemp,0.5,85,100,v=>shot.brewTemp=v);
+  logRefs.bar=makeStepper('Bar','',shot.pressure,0.5,1,15,v=>shot.pressure=v);
+  logRefs.pre=makeStepper('Pre-inf','s',shot.preinfusion,1,0,30,v=>shot.preinfusion=v);
+  p.appendChild(grid3(logRefs.temp,logRefs.bar,logRefs.pre));
+  logRefs.basket=makeSelect('Basket',BASKETS,shot.basket,v=>shot.basket=v);
+  logRefs.prep=makeSelect('Puck prep',PREPS,shot.puckPrep,v=>shot.puckPrep=v);
+  p.appendChild(grid2(logRefs.basket,logRefs.prep));
+
+  // Environment
+  p.appendChild(hdr('Environment'));
+  logRefs.hum=makeStepper('Humidity','%',shot.humidity,5,0,100,v=>shot.humidity=v);
+  logRefs.amb=makeStepper('Ambient','°C',shot.ambientTemp,0.5,10,45,v=>shot.ambientTemp=v);
+  p.appendChild(grid2(logRefs.hum,logRefs.amb));
+
+  // Tasting
+  p.appendChild(hdr('Tasting'));
+  logRefs.tags=makeTags('Flavors',FLAVORS,shot.flavors,5,v=>shot.flavors=v);
+  p.appendChild(logRefs.tags);
+  logRefs.texture=makeSelect('Texture',TEXTURES,shot.texture,v=>shot.texture=v);
+  logRefs.acid=makeSelect('Acidity',ACIDITIES,shot.acidity,v=>shot.acidity=v);
+  p.appendChild(grid2(logRefs.texture,logRefs.acid));
+  logRefs.finish=makeSelect('Finish',FINISHES,shot.finish,v=>shot.finish=v);
+  p.appendChild(logRefs.finish);
+
+  // Score
+  const sf=el('div','field');const sl=el('span','field-label','Overall score');
+  const sr=el('div','score-row');
+  logRefs.scoreRange=document.createElement('input');logRefs.scoreRange.type='range';
+  logRefs.scoreRange.min='1';logRefs.scoreRange.max='10';logRefs.scoreRange.step='1';logRefs.scoreRange.value=String(shot.score);
+  logRefs.scoreVal=el('span','score-val',String(shot.score));logRefs.scoreVal.style.color=scoreColor(shot.score);
+  logRefs.scoreRange.addEventListener('input',()=>{shot.score=+logRefs.scoreRange.value;logRefs.scoreVal.textContent=shot.score;logRefs.scoreVal.style.color=scoreColor(shot.score)});
+  sr.append(logRefs.scoreRange,logRefs.scoreVal);sf.append(sl,sr);p.appendChild(sf);
+
+  // Notes
+  const nf=el('div','field');
+  logRefs.notes=document.createElement('textarea');logRefs.notes.className='input';logRefs.notes.rows=2;
+  logRefs.notes.placeholder='Free notes...';logRefs.notes.value=shot.notes;
+  logRefs.notes.addEventListener('input',()=>shot.notes=logRefs.notes.value);
+  nf.appendChild(logRefs.notes);p.appendChild(nf);
+
+  // Submit
+  const btn=el('button','btn-primary','Log Shot & Get Recs');btn.style.marginTop='12px';
+  btn.addEventListener('click',async()=>{
+    await dbSave(shot);history=await dbAll();updateCount();
+    const sug=analyze(shot,history);showSuggestions(sug);toast('Shot logged ✓');
   });
+  p.appendChild(btn);
+
+  // Suggestions slot
+  const sugBox=document.createElement('div');sugBox.id='suggestions';p.appendChild(sugBox);
 }
 
-async function saveShot(shot) {
-  const db = await openDB();
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction('shots', 'readwrite');
-    const s = tx.objectStore('shots');
-    const req = s.add({ ...shot, timestamp: Date.now() });
-    req.onsuccess = () => resolve(req.result);
-    req.onerror = () => reject(req.error);
+function showSuggestions(sug){
+  const c=$('suggestions');c.innerHTML='';c.appendChild(hdr('Recommendations'));
+  for(const s of sug){
+    const color=priColor(s.pri);
+    const card=el('div','suggestion fade-up');card.style.borderLeftColor=color;
+    const t=el('div','type',`${s.type} · ${s.pri}`);t.style.color=color;
+    const m=el('p','',s.msg);card.append(t,m);
+    if(s.actions.length){const ad=el('div','actions');for(const a of s.actions){const sp=el('span','action','→ '+a);sp.style.background=color+'18';sp.style.color=color;ad.appendChild(sp)}card.appendChild(ad)}
+    c.appendChild(card);
+  }
+  const nb=el('button','btn-secondary','Log Next Shot (keeps params)');nb.style.marginTop='8px';
+  nb.addEventListener('click',()=>{
+    shot.flavors=[];shot.texture='';shot.acidity='';shot.finish='';shot.score=5;shot.notes='';
+    logRefs.tags.reset();logRefs.texture.setValue('');logRefs.acid.setValue('');
+    logRefs.finish.setValue('');logRefs.scoreRange.value='5';logRefs.scoreVal.textContent='5';
+    logRefs.scoreVal.style.color=scoreColor(5);logRefs.notes.value='';c.innerHTML='';
+    $('content').scrollTop=0;
   });
+  c.appendChild(nb);
 }
 
-async function getAllShots() {
-  const db = await openDB();
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction('shots', 'readonly');
-    const req = tx.objectStore('shots').index('timestamp').getAll();
-    req.onsuccess = () => resolve(req.result);
-    req.onerror = () => reject(req.error);
+// === BUILD SETUP VIEW ===
+function buildSetup(){
+  const p=$('view-setup');p.innerHTML='';
+  const desc=el('p');desc.style.cssText='font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:12px';
+  desc.textContent='Configure once. Helps the model give setup-specific recs.';p.appendChild(desc);
+
+  p.appendChild(hdr('Machine'));
+  const m=makeText('Machine (e.g. La Marzocco Linea Mini)',setup.machineName,v=>setup.machineName=v);p.appendChild(wrap(m));
+  const b=makeText('Boiler type (dual boiler, HX, thermoblock)',setup.boilerType,v=>setup.boilerType=v);p.appendChild(wrap(b));
+  const bk=makeSelect('Default basket',BASKETS,setup.basketDefault,v=>setup.basketDefault=v);
+  const dd=makeStepper('Default dose','g',setup.defaultDose,0.5,10,25,v=>setup.defaultDose=v);
+  p.appendChild(grid2(bk,dd));
+
+  p.appendChild(hdr('Grinder'));
+  const g=makeText('Grinder (e.g. Turin DF64 Gen 2)',setup.grinderName,v=>setup.grinderName=v);p.appendChild(wrap(g));
+  const br=makeSelect('Burr type',BURRS,setup.burrType,v=>setup.burrType=v);p.appendChild(br);
+
+  p.appendChild(hdr('Water'));
+  const tds=makeStepper('Water TDS','ppm',setup.waterTDS,5,0,500,v=>setup.waterTDS=v);p.appendChild(tds);
+
+  const sv=el('button','btn-primary','Save Setup');sv.style.marginTop='16px';
+  sv.addEventListener('click',async()=>{
+    await cfgSave('setup',{...setup});toast('Setup saved ✓');
+    const al=$('setup-alert');if(al)al.style.display='none';
   });
+  p.appendChild(sv);
 }
 
-async function deleteAllShots() {
-  const db = await openDB();
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction('shots', 'readwrite');
-    const req = tx.objectStore('shots').clear();
-    req.onsuccess = () => resolve();
-    req.onerror = () => reject(req.error);
+// === BUILD HISTORY ===
+function buildHistory(){
+  const p=$('view-history');p.innerHTML='';
+  if(!history.length){p.innerHTML='<p style="text-align:center;color:var(--text2);margin-top:40px">No shots logged yet.</p>';return}
+  for(const h of[...history].reverse()){
+    const sc=h.score||5;const card=el('div','card');
+    const tr=document.createElement('div');tr.style.cssText='display:flex;justify-content:space-between;align-items:center;margin-bottom:4px';
+    const nm=el('span','',h.beanName||'Unnamed');nm.style.cssText='font-weight:600;font-size:14px';
+    const sv=el('span','shot-score',String(sc));sv.style.color=scoreColor(sc);
+    tr.append(nm,sv);
+    const rc=el('div','shot-recipe',`${h.dose}g → ${h.yield}g in ${h.brewTime}s @ ${h.brewTemp}°C`+(h.grindSetting?' · grind '+h.grindSetting:''));
+    card.append(tr,rc);
+    if(h.flavors&&h.flavors.length){const ch=el('div','flavor-chips');for(const f of h.flavors){ch.appendChild(el('span','flavor-chip',f))}card.appendChild(ch)}
+    const mt=el('div','shot-meta',(h.timestamp?new Date(h.timestamp).toLocaleDateString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'—')+(h.roast?' · '+h.roast:'')+(h.origin?' · '+h.origin:''));
+    card.appendChild(mt);
+    if(h.notes){const n=el('p');n.style.cssText='margin:4px 0 0;font-size:12px;color:var(--text2);font-style:italic';n.textContent=h.notes;card.appendChild(n)}
+    p.appendChild(card);
+  }
+  const cb=el('button','btn-danger','Clear All Data');
+  cb.addEventListener('click',async()=>{if(!confirm('Delete ALL shots?'))return;await dbClear();history=[];updateCount();buildHistory();toast('Cleared')});
+  p.appendChild(cb);
+}
+
+// === BUILD INSIGHTS ===
+function buildInsights(){
+  const p=$('view-insights');p.innerHTML='';
+  if(history.length<3){p.innerHTML='<div style="text-align:center;margin-top:40px;color:var(--text2)"><p style="font-size:40px;margin-bottom:8px">📊</p><p>Log at least 3 shots for insights.</p></div>';return}
+  const scores=history.map(h=>h.score||5);
+  const avg=(scores.reduce((a,b)=>a+b,0)/scores.length).toFixed(1);
+  const r5=history.slice(-5);const rAvg=(r5.reduce((s,h)=>s+(h.score||5),0)/r5.length).toFixed(1);
+  const trend=(rAvg-avg).toFixed(1);const best=history.reduce((b,h)=>(h.score||0)>(b.score||0)?h:b,history[0]);
+
+  p.appendChild(hdr('Overview'));
+  const st=el('div','stats');
+  st.innerHTML=`<div class="stat"><div class="label">Avg</div><div class="value" style="color:${avg>=7?'var(--green)':'var(--yellow)'}">${avg}</div></div><div class="stat"><div class="label">Shots</div><div class="value" style="color:var(--accent)">${history.length}</div></div><div class="stat"><div class="label">Trend</div><div class="value" style="color:${trend>=0?'var(--green)':'var(--red)'}">${trend>=0?'+':''}${trend}</div></div>`;
+  p.appendChild(st);
+
+  p.appendChild(hdr('Best Shot'));
+  const bc=el('div','card');
+  bc.innerHTML=`<div style="font-weight:600;margin-bottom:4px">${best.beanName||'unnamed'} — <span style="color:var(--green)">${best.score}/10</span></div><div class="shot-recipe">${best.dose}g → ${best.yield}g in ${best.brewTime}s @ ${best.brewTemp}°C${best.grindSetting?' · grind '+best.grindSetting:''}</div>`;
+  p.appendChild(bc);
+
+  const bns={};history.forEach(h=>{if(h.beanName)bns[h.beanName]=(bns[h.beanName]||0)+1});
+  const tb=Object.entries(bns).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  if(tb.length){p.appendChild(hdr('Most Used Beans'));for(const[n,c]of tb){const cd=el('div','card');cd.style.cssText='display:flex;justify-content:space-between;align-items:center';cd.innerHTML=`<div><span style="font-weight:600;font-size:13px">${n}</span><span style="font-size:11px;color:var(--text2);margin-left:8px">${c} shots</span></div>`;p.appendChild(cd)}}
+
+  const fc={};history.forEach(h=>(h.flavors||[]).forEach(f=>{fc[f]=(fc[f]||0)+1}));
+  const tf=Object.entries(fc).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  if(tf.length){p.appendChild(hdr('Flavor Profile'));const td=el('div','tags');td.style.marginBottom='12px';for(const[f,c]of tf){const sp=el('span','tag on',`${f} ×${c}`);sp.style.cursor='default';td.appendChild(sp)}p.appendChild(td)}
+
+  p.appendChild(hdr('Score Trend'));
+  const bd=el('div','bars');const l30=history.slice(-30);
+  for(let i=0;i<l30.length;i++){const bar=el('div','bar');const sc=l30[i].score||5;bar.style.height=`${(sc/10)*100}%`;bar.style.background=sc>=7?'var(--green)':sc>=5?'var(--yellow)':'var(--red)';bar.style.opacity=0.5+(i/l30.length)*0.5;bd.appendChild(bar)}
+  p.appendChild(bd);
+  const ax=document.createElement('div');ax.style.cssText='display:flex;justify-content:space-between;font-size:10px;color:var(--text2)';ax.innerHTML='<span>Oldest</span><span>Recent</span>';p.appendChild(ax);
+}
+
+// === NAV ===
+function switchView(view){
+  document.querySelectorAll('.view-panel').forEach(p=>p.classList.remove('active'));
+  $('view-'+view).classList.add('active');
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.view===view));
+  document.querySelectorAll('.bnav-btn').forEach(b=>b.classList.toggle('active',b.dataset.view===view));
+  if(view==='history')buildHistory();
+  if(view==='insights')buildInsights();
+  $('content').scrollTop=0;
+}
+
+function buildNav(){
+  const tabs=[{id:'log',label:'Log',icon:'✏️'},{id:'setup',label:'Setup',icon:'⚙️'},{id:'history',label:'History',icon:'📋'},{id:'insights',label:'Insights',icon:'📊'}];
+  const top=$('tabs-top'),bot=$('bottom-nav');
+  for(const t of tabs){
+    const tb=el('button','tab'+(t.id==='log'?' active':''),t.label);tb.dataset.view=t.id;tb.addEventListener('click',()=>switchView(t.id));top.appendChild(tb);
+    const bb=el('button','bnav-btn'+(t.id==='log'?' active':''));bb.dataset.view=t.id;const ic=el('span','bnav-icon',t.icon);bb.append(ic,document.createTextNode(t.label));bb.addEventListener('click',()=>switchView(t.id));bot.appendChild(bb);
+  }
+}
+
+function updateCount(){$('shot-count').textContent=`${history.length} shot${history.length!==1?'s':''}`}
+
+function updateBanner(){
+  const banner=$('last-shot-banner');
+  if(!history.length||shot.beanName){banner.style.display='none';return}
+  const last=history[history.length-1];banner.style.display='block';banner.innerHTML='';
+  const s=document.createElement('strong');s.textContent=`Last: ${last.beanName||'unnamed'} `;
+  banner.appendChild(s);banner.appendChild(document.createTextNode(`${last.dose}g→${last.yield}g ${last.brewTime}s · score ${last.score}/10 `));
+  const ub=document.createElement('button');
+  ub.style.cssText='background:var(--accent-bg);color:var(--accent);border:1px solid var(--accent);border-radius:6px;padding:4px 10px;font-size:11px;font-weight:600;cursor:pointer;margin-left:4px';
+  ub.textContent='Use same bean ↗';
+  ub.addEventListener('click',()=>{
+    shot.beanName=last.beanName;shot.roast=last.roast;shot.origin=last.origin;
+    shot.process=last.process;shot.flavorNotes=last.flavorNotes;
+    shot.daysOffRoast=(last.daysOffRoast||0)+1;shot.grindSetting=last.grindSetting;shot.rpm=last.rpm;
+    shot.dose=last.dose;shot.yield=last.yield;shot.brewTemp=last.brewTemp;shot.pressure=last.pressure;
+    shot.preinfusion=last.preinfusion;shot.basket=last.basket;shot.puckPrep=last.puckPrep;
+    buildLog();banner.style.display='none';
   });
+  banner.appendChild(ub);
 }
 
-async function saveConfig(key, value) {
-  const db = await openDB();
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction('config', 'readwrite');
-    tx.objectStore('config').put({ key, value });
-    tx.oncomplete = () => resolve();
-    tx.onerror = () => reject(tx.error);
-  });
+// === INIT ===
+async function init(){
+  const saved=await cfgGet('setup');
+  if(saved)Object.assign(setup,saved);
+  history=await dbAll();
+  buildNav();buildLog();buildSetup();buildHistory();buildInsights();updateCount();updateBanner();
+  if(saved)$('setup-alert').style.display='none';
 }
 
-async function getConfig(key) {
-  const db = await openDB();
-  return new Promise((resolve, reject) => {
-    const tx = db.transaction('config', 'readonly');
-    const req = tx.objectStore('config').get(key);
-    req.onsuccess = () => resolve(req.result ? req.result.value : null);
-    req.onerror = () => reject(req.error);
-  });
-}
-
-// ==============================
-// DOMAIN KNOWLEDGE
-// ==============================
-const FLAVORS = [
-  'Fruity','Berry','Citrus','Tropical','Floral','Honey','Caramel','Chocolate',
-  'Nutty','Spicy','Earthy','Woody','Smoky','Roasty','Bitter',
-  'Sour','Sweet','Malty','Winey','Herbal','Vanilla'
-];
-const TEXTURES = ['Thin/Watery','Silky','Syrupy','Creamy','Heavy/Thick','Chalky','Astringent'];
-const ACIDITIES = ['Flat/None','Low & Round','Medium & Bright','High & Sparkling','Sharp/Sour'];
-const FINISHES = ['Short/Clean','Medium','Long & Lingering','Dry','Sweet Aftertaste','Bitter Aftertaste'];
-const ROASTS = ['Light','Light-Medium','Medium','Medium-Dark','Dark'];
-const PROCESSES = ['Washed','Natural','Honey','Anaerobic','Carbonic Mac.','Wet-hulled','Other'];
-const ORIGINS = [
-  'Ethiopia','Kenya','Colombia','Brazil','Guatemala','Costa Rica','Panama',
-  'Honduras','Peru','Indonesia','India','Yemen','Rwanda','El Salvador',
-  'Nicaragua','Mexico','Tanzania','China Yunnan','Other'
-];
-const BASKETS = ['Stock','VST','IMS','Pullman','Other'];
-const PREPS = ['WDT','WDT + Tamp','Tamp Only','Leveler + Tamp','WDT + Leveler + Tamp'];
-const BURRS = ['Flat 64mm','Flat 83mm','Flat 98mm','Conical','Ghost Burr','Other'];
-
-// ==============================
-// ANALYSIS ENGINE
-// ==============================
-function analyze(shot, history) {
-  const suggestions = [];
-  const ratio = shot.yield / shot.dose;
-
-  // Extraction diagnostics from flavor tags
-  const sourTags = (shot.flavors||[]).filter(f => ['Sour','Citrus'].includes(f));
-  const bitterTags = (shot.flavors||[]).filter(f => ['Bitter','Roasty','Smoky'].includes(f));
-
-  if (shot.score <= 5) {
-    if (sourTags.length > 0 || shot.acidity === 'Sharp/Sour') {
-      suggestions.push({ type:'extraction', pri:'high',
-        msg:'Likely underextracted. Grind finer (1-2 steps), raise temp +1-2°C, or increase yield.',
-        actions:['Grind finer','Temp +1°C','Yield +3g'] });
-    }
-    if (bitterTags.length > 0 || shot.texture === 'Astringent') {
-      suggestions.push({ type:'extraction', pri:'high',
-        msg:'Likely overextracted. Grind coarser, lower temp, or pull shorter.',
-        actions:['Grind coarser','Temp -1°C','Yield -3g'] });
-    }
-    if (shot.texture === 'Thin/Watery' || shot.texture === 'Chalky') {
-      suggestions.push({ type:'puck', pri:'medium',
-        msg:'Poor puck integrity — possible channeling. Check WDT, tamp consistency.',
-        actions:['Improve WDT','Check tamp','Try finer grind'] });
-    }
-  }
-
-  if (shot.brewTime < 22) {
-    suggestions.push({ type:'timing', pri:'high',
-      msg:`Shot ran fast (${shot.brewTime}s). Grind finer or up dose by 0.5g.`,
-      actions:['Grind finer','Dose +0.5g'] });
-  }
-  if (shot.brewTime > 35) {
-    suggestions.push({ type:'timing', pri:'high',
-      msg:`Shot choked (${shot.brewTime}s). Grind coarser or reduce dose.`,
-      actions:['Grind coarser','Dose -0.5g'] });
-  }
-
-  if (ratio < 1.5) {
-    suggestions.push({ type:'ratio', pri:'medium',
-      msg:`Tight ristretto (${ratio.toFixed(1)}:1). Intense but may taste muddy. Pull longer if lacking clarity.`,
-      actions:['Yield to 2:1'] });
-  }
-  if (ratio > 3.0) {
-    suggestions.push({ type:'ratio', pri:'medium',
-      msg:`Long ratio (${ratio.toFixed(1)}:1). Clear but may be hollow. Pull shorter if lacking body.`,
-      actions:['Yield to 2.5:1'] });
-  }
-
-  const dor = shot.daysOffRoast || 0;
-  if (dor > 0 && dor < 5) {
-    suggestions.push({ type:'freshness', pri:'low',
-      msg:`Only ${dor} days off roast — heavy CO₂ degassing. Expect erratic shots. Wait a few more days.`,
-      actions:['Wait 2-3 days','Grind coarser to compensate'] });
-  }
-  if (dor > 30) {
-    suggestions.push({ type:'freshness', pri:'medium',
-      msg:`${dor} days off roast — staling likely. Grind finer to compensate.`,
-      actions:['Grind finer','Use fresher beans'] });
-  }
-
-  if (shot.humidity && shot.humidity > 70) {
-    suggestions.push({ type:'environment', pri:'low',
-      msg:`High humidity (${shot.humidity}%) — grind may clump. Slightly coarser than usual.`,
-      actions:['Grind coarser 0.5 step'] });
-  }
-
-  // PERSONALIZED: best shots with same bean
-  if (history.length >= 3) {
-    const sameBeanGood = history.filter(h => h.beanName === shot.beanName && h.score >= 7);
-    if (sameBeanGood.length >= 2) {
-      const avg = (arr, key) => arr.reduce((s,h) => s + (parseFloat(h[key])||0), 0) / arr.length;
-      const aGrind = avg(sameBeanGood, 'grindSetting');
-      const aTemp = avg(sameBeanGood, 'brewTemp');
-      const aDose = avg(sameBeanGood, 'dose');
-      const aYield = avg(sameBeanGood, 'yield');
-      suggestions.push({ type:'personal', pri:'high',
-        msg:`Your ${sameBeanGood.length} best shots with "${shot.beanName}": grind ~${aGrind?aGrind.toFixed(1):'?'}, ${aTemp.toFixed(1)}°C, ${aDose.toFixed(1)}g→${aYield.toFixed(1)}g.`,
-        actions:[`Grind ${aGrind?aGrind.toFixed(1):''}`,`Temp ${aTemp.toFixed(1)}°C`] });
-    }
-  }
-
-  if (suggestions.length === 0 && shot.score >= 7) {
-    suggestions.push({ type:'success', pri:'info', msg:'Great shot — save this recipe as a baseline.', actions:[] });
-  }
-  if (suggestions.length === 0) {
-    suggestions.push({ type:'note', pri:'info', msg:'Add more flavor/texture detail for better diagnostics.', actions:[] });
-  }
-  return suggestions;
-}
-
-// ==============================
-// APP STATE
-// ==============================
-let state = {
-  view: 'log',
-  setup: null,
-  history: [],
-  shot: defaultShot(),
-  suggestions: null,
-  toast: '',
-  loaded: false,
-};
-
-function defaultShot() {
-  return {
-    beanName:'', roast:'', origin:'', process:'', flavorNotes:'',
-    daysOffRoast: 10, grindSetting:'', rpm: 0,
-    dose: 18, yield: 36, brewTime: 28, brewTemp: 93,
-    pressure: 9, preinfusion: 5,
-    basket:'', puckPrep:'',
-    flavors:[], texture:'', acidity:'', finish:'',
-    score: 5, notes:'',
-    humidity: 0, ambientTemp: 0,
-  };
-}
-
-function showToast(msg) {
-  state.toast = msg;
-  render();
-  setTimeout(() => { state.toast = ''; render(); }, 2000);
-}
-
-// ==============================
-// RENDER ENGINE
-// ==============================
-function h(tag, attrs, ...children) {
-  const el = document.createElement(tag);
-  if (attrs) {
-    for (const [k, v] of Object.entries(attrs)) {
-      if (k.startsWith('on') && typeof v === 'function') {
-        el.addEventListener(k.slice(2).toLowerCase(), v);
-      } else if (k === 'className') { el.className = v; }
-      else if (k === 'style' && typeof v === 'object') { Object.assign(el.style, v); }
-      else if (k === 'value') { el.value = v; }
-      else { el.setAttribute(k, v); }
-    }
-  }
-  for (const c of children.flat(Infinity)) {
-    if (c == null || c === false) continue;
-    el.appendChild(typeof c === 'string' || typeof c === 'number' ? document.createTextNode(c) : c);
-  }
-  return el;
-}
-
-function stepper(label, unit, value, step, min, max, onChange) {
-  const dec = () => { const v = Math.max(min, +(value - step).toFixed(2)); onChange(v); };
-  const inc = () => { const v = Math.min(max, +(value + step).toFixed(2)); onChange(v); };
-  return h('div', { className:'field' },
-    h('span', { className:'field-label' }, label, unit ? h('span',{className:'unit'},` (${unit})`) : ''),
-    h('div', { className:'stepper' },
-      h('button', { className:'stepper-btn tap-feedback', onClick: dec }, '−'),
-      h('span', { className:'stepper-val' }, String(value)),
-      h('button', { className:'stepper-btn tap-feedback', onClick: inc }, '+'),
-    )
-  );
-}
-
-function selectField(label, value, options, onChange) {
-  const sel = h('select', { className:'input', onChange: e => onChange(e.target.value) },
-    h('option', { value:'' }, '— Select —'),
-    ...options.map(o => { const opt = h('option', { value: o }, o); if (o === value) opt.selected = true; return opt; })
-  );
-  return h('div', { className:'field' },
-    h('span', { className:'field-label' }, label), sel
-  );
-}
-
-function textField(placeholder, value, onChange) {
-  return h('input', {
-    className:'input', type:'text', placeholder, value,
-    onInput: e => onChange(e.target.value)
-  });
-}
-
-function tagSelector(label, options, selected, max, onChange) {
-  return h('div', { className:'field' },
-    h('span', { className:'field-label' }, label, ` (${selected.length}/${max})`),
-    h('div', { className:'tags' },
-      ...options.map(tag =>
-        h('button', {
-          className: selected.includes(tag) ? 'tag on tap-feedback' : 'tag tap-feedback',
-          onClick: () => {
-            if (selected.includes(tag)) onChange(selected.filter(t=>t!==tag));
-            else if (selected.length < max) onChange([...selected, tag]);
-          }
-        }, tag)
-      )
-    )
-  );
-}
-
-function sectionHdr(title) { return h('div', { className:'section-hdr' }, title); }
-
-function priColor(pri) {
-  return { high:'var(--red)', medium:'var(--yellow)', low:'var(--blue)', info:'var(--green)' }[pri] || 'var(--text2)';
-}
-
-function renderLogView() {
-  const s = state.shot;
-  const update = (k, v) => { state.shot[k] = v; render(); };
-
-  const lastShot = state.history.length > 0 ? state.history[state.history.length-1] : null;
-
-  const nodes = [];
-
-  if (!state.setup) {
-    nodes.push(h('div', { className:'alert' },
-      '⚠ Set up equipment first for better recs. ',
-      h('button', { style:{background:'var(--accent)',color:'#1A1714',border:'none',borderRadius:'4px',padding:'3px 10px',fontSize:'11px',fontWeight:'600',cursor:'pointer',marginLeft:'4px'},
-        onClick: () => { state.view='setup'; render(); }
-      }, 'Setup')
-    ));
-  }
-
-  // Quick-fill from last shot
-  if (lastShot && !s.beanName) {
-    nodes.push(h('div', { className:'last-shot-banner' },
-      h('strong',{}, `Last: ${lastShot.beanName||'unnamed'} `),
-      `${lastShot.dose}g→${lastShot.yield}g ${lastShot.brewTime}s · score ${lastShot.score}/10 `,
-      h('button', { className:'preset', style:{display:'inline',marginLeft:'4px'},
-        onClick: () => {
-          state.shot = {
-            ...defaultShot(),
-            beanName: lastShot.beanName, roast: lastShot.roast, origin: lastShot.origin,
-            process: lastShot.process, flavorNotes: lastShot.flavorNotes,
-            daysOffRoast: (lastShot.daysOffRoast||0) + 1,
-            grindSetting: lastShot.grindSetting, rpm: lastShot.rpm,
-            dose: lastShot.dose, yield: lastShot.yield,
-            brewTemp: lastShot.brewTemp, pressure: lastShot.pressure,
-            preinfusion: lastShot.preinfusion, basket: lastShot.basket, puckPrep: lastShot.puckPrep,
-          };
-          render();
-        }
-      }, 'Use same bean ↗')
-    ));
-  }
-
-  // BEAN
-  nodes.push(sectionHdr('Bean'));
-  nodes.push(h('div',{className:'field'}, textField('Bean name / blend', s.beanName, v => update('beanName', v))));
-  nodes.push(h('div',{className:'grid2'},
-    selectField('Roast', s.roast, ROASTS, v => update('roast', v)),
-    selectField('Origin', s.origin, ORIGINS, v => update('origin', v)),
-  ));
-  nodes.push(h('div',{className:'grid2'},
-    selectField('Process', s.process, PROCESSES, v => update('process', v)),
-    stepper('Days off roast', '', s.daysOffRoast, 1, 0, 120, v => update('daysOffRoast', v)),
-  ));
-  nodes.push(h('div',{className:'field'}, textField('Package notes (e.g. blueberry, dark choc)', s.flavorNotes, v => update('flavorNotes', v))));
-
-  // GRINDER
-  nodes.push(sectionHdr('Grinder'));
-  nodes.push(h('div',{className:'grid2'},
-    h('div',{className:'field'},
-      h('span',{className:'field-label'},'Burr gap setting'),
-      h('input',{className:'input input-mono',type:'text',placeholder:'e.g. 2.5.0', value:s.grindSetting, onInput:e=>update('grindSetting',e.target.value)})
-    ),
-    stepper('RPM', '', s.rpm, 50, 200, 1800, v => update('rpm', v)),
-  ));
-
-  // BREW
-  nodes.push(sectionHdr('Brew'));
-  nodes.push(h('div',{className:'grid3'},
-    stepper('Dose', 'g', s.dose, 0.5, 10, 25, v => update('dose', v)),
-    stepper('Yield', 'g', s.yield, 0.5, 10, 80, v => update('yield', v)),
-    stepper('Time', 's', s.brewTime, 1, 10, 60, v => update('brewTime', v)),
-  ));
-  nodes.push(h('div',{className:'grid3'},
-    stepper('Temp', '°C', s.brewTemp, 0.5, 85, 100, v => update('brewTemp', v)),
-    stepper('Bar', '', s.pressure, 0.5, 1, 15, v => update('pressure', v)),
-    stepper('Pre-inf', 's', s.preinfusion, 1, 0, 30, v => update('preinfusion', v)),
-  ));
-  nodes.push(h('div',{className:'grid2'},
-    selectField('Basket', s.basket, BASKETS, v => update('basket', v)),
-    selectField('Puck prep', s.puckPrep, PREPS, v => update('puckPrep', v)),
-  ));
-
-  // ENVIRONMENT
-  nodes.push(sectionHdr('Environment'));
-  nodes.push(h('div',{className:'grid2'},
-    stepper('Humidity', '%', s.humidity, 5, 0, 100, v => update('humidity', v)),
-    stepper('Ambient', '°C', s.ambientTemp, 0.5, 10, 45, v => update('ambientTemp', v)),
-  ));
-
-  // TASTING
-  nodes.push(sectionHdr('Tasting'));
-  nodes.push(tagSelector('Flavors', FLAVORS, s.flavors, 5, v => update('flavors', v)));
-  nodes.push(h('div',{className:'grid2'},
-    selectField('Texture', s.texture, TEXTURES, v => update('texture', v)),
-    selectField('Acidity', s.acidity, ACIDITIES, v => update('acidity', v)),
-  ));
-  nodes.push(selectField('Finish', s.finish, FINISHES, v => update('finish', v)));
-
-  // SCORE
-  nodes.push(h('div',{className:'field'},
-    h('span',{className:'field-label'}, 'Overall score'),
-    h('div',{className:'score-row'},
-      h('input',{type:'range',min:'1',max:'10',step:'1',value:String(s.score),
-        onInput:e=>update('score',parseInt(e.target.value))}),
-      h('span',{className:'score-val',style:{color: s.score>=7?'var(--green)':s.score>=5?'var(--yellow)':'var(--red)'}}, String(s.score))
-    )
-  ));
-
-  // NOTES
-  nodes.push(h('div',{className:'field'},
-    h('textarea',{className:'input',rows:'2',placeholder:'Free notes...', value:s.notes, onInput:e=>update('notes',e.target.value)})
-  ));
-
-  // SUBMIT
-  nodes.push(h('button', { className:'btn-primary tap-feedback', style:{marginTop:'12px'},
-    onClick: async () => {
-      await saveShot(state.shot);
-      state.history = await getAllShots();
-      state.suggestions = analyze(state.shot, state.history);
-      render();
-      showToast('Shot logged ✓');
-      document.querySelector('.content').scrollTop = document.querySelector('.content').scrollHeight;
-    }
-  }, 'Log Shot & Get Recs'));
-
-  // SUGGESTIONS
-  if (state.suggestions) {
-    nodes.push(sectionHdr('Recommendations'));
-    for (const sg of state.suggestions) {
-      const color = priColor(sg.pri);
-      nodes.push(h('div', { className:'suggestion fade-up', style:{borderLeftColor:color} },
-        h('div',{className:'type',style:{color}}, `${sg.type} · ${sg.pri}`),
-        h('p',{}, sg.msg),
-        sg.actions.length > 0 ? h('div',{className:'actions'},
-          ...sg.actions.map(a => h('span',{className:'action',style:{background:color+'18',color}}, '→ '+a))
-        ) : ''
-      ));
-    }
-    nodes.push(h('button', { className:'btn-secondary', style:{marginTop:'8px'},
-      onClick: () => {
-        const prev = state.shot;
-        state.shot = {
-          ...defaultShot(),
-          beanName:prev.beanName, roast:prev.roast, origin:prev.origin,
-          process:prev.process, flavorNotes:prev.flavorNotes,
-          daysOffRoast: prev.daysOffRoast,
-          grindSetting:prev.grindSetting, rpm:prev.rpm,
-          dose:prev.dose, yield:prev.yield,
-          brewTemp:prev.brewTemp, pressure:prev.pressure,
-          preinfusion:prev.preinfusion, basket:prev.basket, puckPrep:prev.puckPrep,
-        };
-        state.suggestions = null;
-        render();
-        document.querySelector('.content').scrollTop = 0;
-      }
-    }, 'Log Next Shot (keeps params)'));
-  }
-
-  return nodes;
-}
-
-function renderSetupView() {
-  const s = state.setup || { machineName:'', grinderName:'', burrType:'', waterTDS:0, boilerType:'', basketDefault:'', defaultDose:18 };
-  const update = (k, v) => { s[k] = v; };
-
-  return [
-    h('p',{style:{fontSize:'13px',color:'var(--text2)',lineHeight:'1.6',marginBottom:'12px'}},
-      'Configure once. This helps the model give setup-specific recs — temperature offsets, grinder retention, burr profiles.'),
-    sectionHdr('Machine'),
-    h('div',{className:'field'}, textField('Machine (e.g. La Marzocco Linea Mini)', s.machineName, v => s.machineName=v)),
-    h('div',{className:'field'}, textField('Boiler type (dual boiler, HX, thermoblock)', s.boilerType, v => s.boilerType=v)),
-    h('div',{className:'grid2'},
-      selectField('Default basket', s.basketDefault, BASKETS, v => s.basketDefault=v),
-      stepper('Default dose', 'g', s.defaultDose, 0.5, 10, 25, v => s.defaultDose=v),
-    ),
-    sectionHdr('Grinder'),
-    h('div',{className:'field'}, textField('Grinder (e.g. Turin DF64 Gen 2)', s.grinderName, v => s.grinderName=v)),
-    selectField('Burr type', s.burrType, BURRS, v => s.burrType=v),
-    sectionHdr('Water'),
-    stepper('Water TDS', 'ppm', s.waterTDS, 5, 0, 500, v => s.waterTDS=v),
-    h('button', { className:'btn-primary tap-feedback', style:{marginTop:'16px'},
-      onClick: async () => {
-        state.setup = { ...s };
-        await saveConfig('setup', state.setup);
-        showToast('Setup saved ✓');
-        render();
-      }
-    }, 'Save Setup'),
-  ];
-}
-
-function renderHistoryView() {
-  if (state.history.length === 0) {
-    return [h('p',{style:{textAlign:'center',color:'var(--text2)',marginTop:'40px'}},'No shots logged yet.')];
-  }
-  const nodes = [];
-  const reversed = [...state.history].reverse();
-  for (const shot of reversed) {
-    const sc = shot.score||5;
-    nodes.push(h('div',{className:'card fade-up'},
-      h('div',{className:'shot-row'},
-        h('span',{style:{fontWeight:'600',fontSize:'14px'}}, shot.beanName || 'Unnamed'),
-        h('span',{className:'shot-score',style:{color:sc>=7?'var(--green)':sc>=5?'var(--yellow)':'var(--red)'}}, String(sc)),
-      ),
-      h('div',{className:'shot-recipe'},
-        `${shot.dose}g → ${shot.yield}g in ${shot.brewTime}s @ ${shot.brewTemp}°C`,
-        shot.grindSetting ? ` · grind ${shot.grindSetting}` : '',
-      ),
-      (shot.flavors||[]).length > 0 ? h('div',{className:'flavor-chips'},
-        ...(shot.flavors||[]).map(f => h('span',{className:'flavor-chip'}, f))
-      ) : '',
-      h('div',{className:'shot-meta'},
-        shot.timestamp ? new Date(shot.timestamp).toLocaleDateString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}) : '—',
-        shot.roast ? ` · ${shot.roast}` : '', shot.origin ? ` · ${shot.origin}` : '',
-      ),
-      shot.notes ? h('p',{style:{margin:'4px 0 0',fontSize:'12px',color:'var(--text2)',fontStyle:'italic'}}, shot.notes) : '',
-    ));
-  }
-  nodes.push(h('button', { className:'btn-danger',
-    onClick: async () => {
-      if (!confirm('Delete ALL logged shots? Cannot be undone.')) return;
-      await deleteAllShots();
-      state.history = [];
-      render();
-      showToast('All data cleared');
-    }
-  }, 'Clear All Data'));
-  return nodes;
-}
-
-function renderInsightsView() {
-  const hist = state.history;
-  if (hist.length < 3) {
-    return [
-      h('div',{style:{textAlign:'center',marginTop:'40px',color:'var(--text2)'}},
-        h('p',{style:{fontSize:'40px',marginBottom:'8px'}},'📊'),
-        h('p',{},'Log at least 3 shots to unlock insights.'),
-        h('p',{style:{fontSize:'12px',opacity:0.6}},'The model needs data to find patterns.'),
-      )
-    ];
-  }
-
-  const scores = hist.map(h => h.score||5);
-  const avg = (scores.reduce((a,b)=>a+b,0)/scores.length).toFixed(1);
-  const recent5 = hist.slice(-5);
-  const rAvg = (recent5.reduce((s,h)=>s+(h.score||5),0)/recent5.length).toFixed(1);
-  const trend = (rAvg - avg).toFixed(1);
-  const best = hist.reduce((b,h) => (h.score||0) > (b.score||0) ? h : b, hist[0]);
-
-  // Bean counts
-  const bc = {};
-  hist.forEach(h => { if(h.beanName) bc[h.beanName]=(bc[h.beanName]||0)+1; });
-  const topBeans = Object.entries(bc).sort((a,b)=>b[1]-a[1]).slice(0,5);
-
-  // Best per bean
-  const bpb = {};
-  hist.forEach(h => { if(h.beanName && (!bpb[h.beanName]||h.score>bpb[h.beanName].score)) bpb[h.beanName]=h; });
-
-  // Flavor freq
-  const fc = {};
-  hist.forEach(h => (h.flavors||[]).forEach(f => { fc[f]=(fc[f]||0)+1; }));
-  const topFlavors = Object.entries(fc).sort((a,b)=>b[1]-a[1]).slice(0,8);
-
-  const nodes = [];
-  nodes.push(sectionHdr('Overview'));
-  nodes.push(h('div',{className:'stats'},
-    h('div',{className:'stat'},
-      h('div',{className:'label'},'Avg Score'),
-      h('div',{className:'value',style:{color:avg>=7?'var(--green)':'var(--yellow)'}}, avg),
-    ),
-    h('div',{className:'stat'},
-      h('div',{className:'label'},'Total Shots'),
-      h('div',{className:'value',style:{color:'var(--accent)'}}, String(hist.length)),
-    ),
-    h('div',{className:'stat'},
-      h('div',{className:'label'},'Trend'),
-      h('div',{className:'value',style:{color:trend>=0?'var(--green)':'var(--red)'}}, (trend>=0?'+':'')+trend),
-    ),
-  ));
-
-  // Best shot
-  nodes.push(sectionHdr('Best Shot'));
-  nodes.push(h('div',{className:'card'},
-    h('div',{style:{fontWeight:'600',marginBottom:'4px'}},
-      (best.beanName||'unnamed'), ' — ', h('span',{style:{color:'var(--green)'}}, `${best.score}/10`)),
-    h('div',{className:'shot-recipe'},
-      `${best.dose}g → ${best.yield}g in ${best.brewTime}s @ ${best.brewTemp}°C`,
-      best.grindSetting ? ` · grind ${best.grindSetting}` : ''),
-  ));
-
-  // Beans
-  if (topBeans.length > 0) {
-    nodes.push(sectionHdr('Most Used Beans'));
-    for (const [name, count] of topBeans) {
-      const b = bpb[name];
-      nodes.push(h('div',{className:'card',style:{display:'flex',justifyContent:'space-between',alignItems:'center'}},
-        h('div',{},
-          h('span',{style:{fontWeight:'600',fontSize:'13px'}}, name),
-          h('span',{style:{fontSize:'11px',color:'var(--text2)',marginLeft:'8px'}}, `${count} shots`),
-        ),
-        b ? h('span',{style:{fontSize:'10px',fontFamily:"'JetBrains Mono',monospace",color:'var(--text2)'}}, `best: ${b.score}/10`) : ''
-      ));
-    }
-  }
-
-  // Flavors
-  if (topFlavors.length > 0) {
-    nodes.push(sectionHdr('Your Flavor Profile'));
-    nodes.push(h('div',{className:'tags',style:{marginBottom:'12px'}},
-      ...topFlavors.map(([f,c]) =>
-        h('span',{className:'tag on',style:{cursor:'default'}}, `${f} ×${c}`)
-      )
-    ));
-  }
-
-  // Score bars
-  nodes.push(sectionHdr('Score Trend'));
-  const last30 = hist.slice(-30);
-  nodes.push(h('div',{className:'bars'},
-    ...last30.map((shot,i) =>
-      h('div',{className:'bar',title:`${shot.beanName||''}: ${shot.score}/10`,style:{
-        height: `${((shot.score||5)/10)*100}%`,
-        background: (shot.score||5)>=7?'var(--green)':(shot.score||5)>=5?'var(--yellow)':'var(--red)',
-        opacity: 0.5 + (i/last30.length)*0.5,
-      }})
-    )
-  ));
-  nodes.push(h('div',{style:{display:'flex',justifyContent:'space-between',fontSize:'10px',color:'var(--text2)'}},
-    h('span',{},'Oldest'), h('span',{},'Recent')
-  ));
-
-  return nodes;
-}
-
-function render() {
-  const app = document.getElementById('app');
-  const scrollPos = app.querySelector('.content')?.scrollTop || 0;
-
-  app.innerHTML = '';
-
-  // Header
-  const header = h('div',{className:'header'},
-    h('div',{className:'header-top'},
-      h('span',{style:{fontSize:'24px',fontFamily:"'Instrument Serif',serif"}},'☕'),
-      h('h1',{}, 'Dial-In'),
-      h('span',{className:'badge'}, `${state.history.length} shot${state.history.length!==1?'s':''}`),
-    ),
-    h('div',{className:'tabs'},
-      ...['log','setup','history','insights'].map(id =>
-        h('button',{className: `tab ${state.view===id?'active':''}`,
-          onClick:()=>{state.view=id;state.suggestions=null;render();}
-        }, id==='log'?'Log':id==='setup'?'Setup':id==='history'?'History':'Insights')
-      )
-    )
-  );
-  app.appendChild(header);
-
-  // Content
-  const content = h('div',{className:'content'});
-  let children = [];
-  if (state.view==='log') children = renderLogView();
-  else if (state.view==='setup') children = renderSetupView();
-  else if (state.view==='history') children = renderHistoryView();
-  else if (state.view==='insights') children = renderInsightsView();
-
-  for (const c of children.flat()) { if(c) content.appendChild(c); }
-  app.appendChild(content);
-
-  // Bottom nav (mobile)
-  const bnav = h('div',{className:'bottom-nav'},
-    ...[ {id:'log',icon:'✏️',label:'Log'}, {id:'setup',icon:'⚙️',label:'Setup'},
-         {id:'history',icon:'📋',label:'History'}, {id:'insights',icon:'📊',label:'Insights'}
-    ].map(t =>
-      h('button',{className:`bnav-btn ${state.view===t.id?'active':''}`,
-        onClick:()=>{state.view=t.id;state.suggestions=null;render();}
-      }, h('span',{className:'bnav-icon'},t.icon), t.label)
-    )
-  );
-  app.appendChild(bnav);
-
-  // Toast
-  const toast = h('div',{className:`toast ${state.toast?'show':''}`}, state.toast);
-  app.appendChild(toast);
-
-  // Restore scroll
-  if (content && scrollPos) content.scrollTop = scrollPos;
-}
-
-// ==============================
-// INIT
-// ==============================
-async function init() {
-  state.setup = await getConfig('setup');
-  state.history = await getAllShots();
-  state.loaded = true;
-  render();
-}
-
-// Register service worker
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('./sw.js', { scope: './' }).catch(err => {
-    console.log('SW registration failed:', err);
-  });
-}
-
+if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(e=>console.log('SW fail:',e));
 init();
 </script>
 </body>
